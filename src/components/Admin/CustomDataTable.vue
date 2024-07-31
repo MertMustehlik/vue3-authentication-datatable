@@ -9,9 +9,7 @@
                    class="display">
             <thead>
             <tr>
-                <th @click="sort('id')">#</th>
-                <th @click="sort('name')">Name</th>
-                <th @click="sort('email')">E-mail</th>
+                <th v-for="column in columns" @click="column?.sortable && sort(column?.value)">{{ column?.label }}</th>
             </tr>
             </thead>
         </DataTable>
@@ -21,7 +19,7 @@
     </div>
     <div class="text-end">
         <a-pagination
-                :pageSizeOptions="false"
+                :show-size-changer="false"
                 :total="props.attrs.total"
                 :current="currentPage"
                 :page-size="perPage"
@@ -46,22 +44,36 @@ const props = defineProps({
             total: 0,
             isLoading: false
         }
+    },
+    columns: {
+        type: Array,
+        default: []
     }
 });
 
-
 const emit = defineEmits(['fetch-data']);
+
+const columnDefs = props.columns.map((item, index) => {
+    return {
+        orderable: item.sortable,
+        targets: index
+    }
+})
 
 const dataTableOptions = ref({
     paging: false,
     searching: false,
     ordering: true,
-    info: false
+    info: false,
+    order: [],
+    columnDefs: columnDefs
 });
+
+
 const currentPage = ref(1);
 const perPage = ref(10);
-const sortBy = ref('id');
-const sortOrder = ref('asc');
+const sortBy = ref(props.columns[0]?.value);
+const sortOrder = ref('desc');
 const search = ref('');
 
 const fetchData = () => {
