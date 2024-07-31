@@ -76,7 +76,8 @@ const onSubmit = async () => {
         requestAlert.hideCancelBtn = true
         requestAlert.type = "success"
         setTimeout(() => {
-            router.push({ name: 'dashboard' })
+            window.location.href = "/"
+            // router.push({ name: 'dashboard' })
         }, 1500)
     } else {
         requestAlert.hideCancelBtn = false
