@@ -1,12 +1,10 @@
 <template>
-    <div>
-        <h1 class="text-4xl font-semibold">Hello {{authStore?.user?.name}}. Welcome to dashboard</h1>
-    </div>
+    <CustomCard>
+        <template #body>
+            <h1 class="text-2xl font-semibold">Hello. Welcome to dashboard</h1>
+        </template>
+    </CustomCard>
 </template>
 <script setup>
-
-import {useAuthStore} from "@/stores/authStore.js";
-
-const authStore = useAuthStore();
-
+import CustomCard from "@/components/Admin/CustomCard.vue";
 </script>

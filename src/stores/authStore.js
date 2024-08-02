@@ -5,7 +5,6 @@ import router from "@/router/index.js";
 
 export const useAuthStore = defineStore("auth", {
     state: () => ({
-        user: JSON.parse(localStorage.getItem('user')) ?? {},
         token: localStorage.getItem('token') ?? "",
         isAuth: !!localStorage.getItem('token')
     }),
@@ -17,8 +16,8 @@ export const useAuthStore = defineStore("auth", {
     actions: {
         async login(payload) {
             const res = await login(payload)
-            if (res?.data?.success) {
-                const token = res?.data?.token;
+            if (res.success) {
+                const token = res.token;
                 const decoded = jwtDecode(token);
                 const user = {
                     "id": decoded?.sub,
@@ -32,7 +31,7 @@ export const useAuthStore = defineStore("auth", {
                 this.user = user
                 this.token = token
                 this.isAuth = true
-                return {"success": true, "message": res?.data?.message}
+                return {"success": true, "message": res?.message}
             } else {
                 localStorage.setItem("user", null)
                 localStorage.setItem("token", null)
@@ -40,7 +39,7 @@ export const useAuthStore = defineStore("auth", {
                 this.user = {}
                 this.token = ""
                 this.isAuth = false
-                return {"success": false, "message": res?.data?.message ?? "An unexpected problem occurred"}
+                return {"success": false, "message": res?.message ?? "An unexpected problem occurred"}
             }
         },
         logout() {

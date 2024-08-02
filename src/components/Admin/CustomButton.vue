@@ -30,7 +30,7 @@ export default {
         computedClasses() {
             switch (this.btnType) {
                 case "primary":
-                    return "bg-blue-600 hover:bg-blue-700 text-white";
+                    return "bg-gray-900 hover:bg-gray-800 text-white";
                 case "danger":
                     return "bg-red-600 hover:bg-red-700 text-white";
                 case "light":

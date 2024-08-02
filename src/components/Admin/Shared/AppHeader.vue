@@ -3,8 +3,12 @@
         <header class="bg-white flex justify-between items-center">
             <Breadcrumb/>
             <div>
-                <button @click="logout" class="px-4 py-2 text-white bg-blue-700 hover:bg-blue-600 rounded-lg">Logout
-                </button>
+                <CustomButton @click="logout">
+                    <template #icon>
+                        <i class="fa fa-right-from-bracket"></i>
+                    </template>
+                    Logout
+                </CustomButton>
             </div>
         </header>
     </CustomContainer>
@@ -15,10 +19,12 @@ import Breadcrumb from "@/components/Admin/Shared/Breadcrumb.vue";
 import SweetAlert from "@/components/Admin/SweetAlert.vue";
 import {useAuthStore} from "@/stores/authStore.js";
 import router from "@/router/index.js";
+import CustomButton from "@/components/Admin/CustomButton.vue";
 
 export default {
     name: "Header",
     components: {
+        CustomButton,
         SweetAlert,
         Breadcrumb,
         CustomContainer

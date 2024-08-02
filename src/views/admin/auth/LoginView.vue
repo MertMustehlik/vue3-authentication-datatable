@@ -18,8 +18,7 @@
                     </div>
                     <div>
                         <CustomButton class="w-full" btnType="primary" :loading="loading">
-                            <template #icon><i class="fa fa-plus"></i></template>
-                            Create
+                            Login
                         </CustomButton>
                     </div>
                 </form>
@@ -43,7 +42,6 @@ import InputErrors from "@/components/Admin/InputErrors.vue";
 import {useRouter} from "vue-router";
 
 const authStore = useAuthStore();
-const router = useRouter();
 
 const loginForm = reactive({
     email: "admin@admin.com",
@@ -72,19 +70,18 @@ const onSubmit = async () => {
 
     loading.value = true
     const res = await authStore.login(loginForm)
-    if (res?.success) {
+    if (res.success) {
         requestAlert.hideCancelBtn = true
         requestAlert.type = "success"
         setTimeout(() => {
             window.location.href = "/"
-            // router.push({ name: 'dashboard' })
-        }, 1500)
+        }, 1000)
     } else {
         requestAlert.hideCancelBtn = false
         requestAlert.type = "error"
     }
 
-    requestAlert.message = res?.message ?? ""
+    requestAlert.message = res.message ?? ""
     requestAlert.open = true
     loading.value = false
 }
