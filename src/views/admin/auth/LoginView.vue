@@ -1,8 +1,9 @@
 <template>
     <div class="flex justify-center items-center bg-gray-200 h-[100vh]">
         <div class="bg-white rounded-lg shadow w-[500px]">
-            <div class="border-b border-gray-900 text-center py-5 px-8">
-                <h3 class="text-2xl font-semibold">Appointment App</h3>
+            <div class="border-b border-gray-900 py-5 px-8 flex flex-center">
+<!--                <h3 class="text-2xl font-semibold"> Example App</h3>-->
+                <img src="/logo_dark.png" alt="Brand Logo" class="w-1/3">
             </div>
             <div class="flex flex-col gap-7 px-8 my-9">
                 <form @submit.prevent="onSubmit" class="grid gap-6 mb-6">
@@ -25,9 +26,6 @@
             </div>
         </div>
     </div>
-    <SweetAlert :hide-cancel-btn="requestAlert.hideCancelBtn" :type="requestAlert.type" :open="requestAlert.open" @close="requestAlert.open = false">
-        <template #message>{{ requestAlert.message }}</template>
-    </SweetAlert>
 </template>
 <script setup>
 import CustomInput from "@/components/Admin/CustomInput.vue";
@@ -40,6 +38,7 @@ import {reactive, ref} from "vue";
 import {email, required} from "@vuelidate/validators";
 import InputErrors from "@/components/Admin/InputErrors.vue";
 import {useRouter} from "vue-router";
+import {notification} from "ant-design-vue";
 
 const authStore = useAuthStore();
 
@@ -57,13 +56,6 @@ const loginValidate = useVuelidate(loginFormRules, loginForm)
 
 const loading = ref(false)
 
-const requestAlert = reactive({
-    type: "",
-    open: false,
-    message: "",
-    hideCancelBtn: false,
-})
-
 const onSubmit = async () => {
     const validate = await loginValidate.value.$validate();
     if(!validate) return;
@@ -71,18 +63,20 @@ const onSubmit = async () => {
     loading.value = true
     const res = await authStore.login(loginForm)
     if (res.success) {
-        requestAlert.hideCancelBtn = true
-        requestAlert.type = "success"
+        notification.success({
+            message: res?.message ?? '',
+            placement: "top"
+        });
         setTimeout(() => {
             window.location.href = "/"
         }, 1000)
     } else {
-        requestAlert.hideCancelBtn = false
-        requestAlert.type = "error"
+        notification.error({
+            message: res?.message ?? '',
+            placement: "top"
+        });
+        loading.value = false
     }
 
-    requestAlert.message = res.message ?? ""
-    requestAlert.open = true
-    loading.value = false
 }
 </script>
